@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER-SCAN v4.1 | Spectral Analysis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="scanner-container">
+        <header>
+            <div class="status-bar">
+                <span>SYSTEM: ONLINE</span>
+                <span id="mic-status">MIC: READY</span>
+                <span id="frequency">FREQ: 000.00 MHz</span>
+            </div>
+            <h1>AETHER-SCAN <small>PRO</small></h1>
+        </header>
+
+        <div id="radar-box">
+            <div class="radar">
+                <div class="sweep"></div>
+                <div id="ghost-dot"></div>
+            </div>
+        </div>
+
+        <div id="display-screen">
+            <div id="output-log">
+                <p class="system-msg">PRESS BUTTON TO START VOICE INTERCEPTION...</p>
+            </div>
+            <div id="glitch-overlay"></div>
+        </div>
+
+        <div class="controls">
+            <button id="scan-btn">START VOICE SCAN</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
