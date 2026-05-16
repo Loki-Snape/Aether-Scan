@@ -1,12 +1,18 @@
 const express = require('express');
+const path = require('path');
 const fetch = require('node-fetch');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use(express.static(__dirname));
 
 const API_KEY = process.env.GOOGLE_API_KEY;
 if (!API_KEY) console.warn('Warning: GOOGLE_API_KEY is not set. Requests will fail until it is configured.');
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/api/generate', async (req, res) => {
   try {
@@ -34,5 +40,22 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Proxy server listening on http://localhost:${port}`));
+function startServer(port, retriesLeft = 10) {
+  const server = app.listen(port, () => {
+    console.log(`Proxy server listening on http://localhost:${port}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE' && retriesLeft > 0) {
+      const nextPort = Number(port) + 1;
+      console.warn(`Port ${port} is already in use, trying ${nextPort}...`);
+      startServer(nextPort, retriesLeft - 1);
+      return;
+    }
+
+    console.error('Server failed to start:', err);
+    process.exit(1);
+  });
+}
+
+startServer(Number(process.env.PORT || 3000));
