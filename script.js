@@ -1,4 +1,5 @@
-const API_KEY = "AIzaSyDKwlsUQe22cSayfTuYLDIYxhQUHEI1So0"; // Google Gemini API Key (Restricted to only Gemini-1.5-Flash model and CORS for security)
+// NOTE: API key moved to server environment variable for security.
+// Do NOT store API keys in client-side code.
 let isGhostActive = false;
 let currentGhostType = null;
 let currentGhostName = null; 
@@ -162,20 +163,11 @@ const ghostTypes = [
 async function fetchGhostResponse(prompt) {
     isFetching = true; // Locks the mic so it waits for Google
     try {
-        // We changed v1 to v1beta and used gemini-1.5-flash-8b
-const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${API_KEY}`, {
+        // Send request to local proxy server which holds the API key in an environment variable
+        const response = await fetch('/api/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: `Act as a spirit box ghost. Personality: ${currentGhostType}. 
-                    Rules: 
-                    1. Max 5 words. 
-                    2. Be scary or weird. 
-                    3. Occasionally mention names like Gyan, Mukul, Mridul, or Saurav but once in 3 4 answers.
-                    4. User said: "${prompt}".` }]
-                }]
-            })
+            body: JSON.stringify({ prompt, currentGhostType })
         });
 
         const data = await response.json();
