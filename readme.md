@@ -49,8 +49,4 @@ Contributing
 - Contributions should focus on UI/UX polish, accessibility, UX disclaimers, and improving safety messaging.
 - Do NOT add real-world claims, sensitive personal data, or detailed lists of in-universe "entities".
 
-License
-- MIT — see LICENSE for details.
-
 Enjoy responsibly — and keep the scares fictional.
-
